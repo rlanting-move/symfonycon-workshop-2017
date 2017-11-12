@@ -6,11 +6,16 @@ use Behat\Behat\Tester\Exception\PendingException;
 class MastermindContext implements Context
 {
     /**
+     * @var int
+     */
+    private $numberOfAttempts = 12;
+
+    /**
      * @Given a decoding board of :numberOfAttempts attempts
      */
     public function aDecodingBoardOfGuesses($numberOfAttempts)
     {
-        throw new PendingException();
+        $this->numberOfAttempts = (int) $numberOfAttempts;
     }
 
     /**
@@ -18,6 +23,11 @@ class MastermindContext implements Context
      */
     public function theCodeMakerPlacedThePatternOnTheBoard($code)
     {
+        // we're not doing much with the code yet, but at some point we'll need to stub the CodeMaker to return it
+        $codeLength = substr_count($code, ' ') + 1;
+
+        $startGameUseCase = new StartGameUseCase();
+        $startGameUseCase->execute($codeLength);
     }
 
     /**
