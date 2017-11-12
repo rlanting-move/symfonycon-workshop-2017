@@ -5,4 +5,7 @@ namespace SymfonyCon\Mastermind\UseCase;
 
 class StartGameUseCase
 {
+    public function execute($codeLength)
+    {
+    }
 }
