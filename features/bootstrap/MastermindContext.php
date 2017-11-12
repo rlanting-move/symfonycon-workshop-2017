@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use PHPUnit\Framework\Assert;
 use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\UseCase\MakeGuessUseCase;
 use SymfonyCon\Mastermind\UseCase\StartGameUseCase;
@@ -53,7 +54,12 @@ class MastermindContext implements Context
      */
     public function theCodeMakerShouldGiveMeFeedbackOnMyGuess($feedback)
     {
-        throw new PendingException();
+        $viewDecodingBoardUseCase = new ViewDecodingBoardUseCase();
+        $board = $viewDecodingBoardUseCase->execute($this->gameUuid);
+
+        Assert::assertInstanceOf(Feedback::class, $board->lastFeedback(), 'Feedback on the last guess attempt was given.');
+        Assert::assertSame(substr_count($feedback, 'X'), $board->lastFeedback()->exactHits());
+        Assert::assertSame(substr_count($feedback, 'O'), $board->lastFeedback()->colourHits());
     }
 
     /**
