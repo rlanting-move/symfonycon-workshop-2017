@@ -5,8 +5,10 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use SymfonyCon\Mastermind\Game\Code;
+use SymfonyCon\Mastermind\Game\Feedback;
 use SymfonyCon\Mastermind\UseCase\MakeGuessUseCase;
 use SymfonyCon\Mastermind\UseCase\StartGameUseCase;
+use SymfonyCon\Mastermind\UseCase\ViewDecodingBoardUseCase;
 
 class MastermindContext implements Context
 {
