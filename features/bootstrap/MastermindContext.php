@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use SymfonyCon\Mastermind\Game\Code;
+use SymfonyCon\Mastermind\UseCase\MakeGuessUseCase;
 use SymfonyCon\Mastermind\UseCase\StartGameUseCase;
 
 class MastermindContext implements Context

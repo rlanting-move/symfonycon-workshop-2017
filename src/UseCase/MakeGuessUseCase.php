@@ -5,4 +5,7 @@ namespace SymfonyCon\Mastermind\UseCase;
 
 class MakeGuessUseCase
 {
+    public function execute($gameUuid, $code)
+    {
+    }
 }
