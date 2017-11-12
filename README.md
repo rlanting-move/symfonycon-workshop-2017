@@ -61,3 +61,4 @@ You're good to go as soon as composer finishes with no issues.
 ## Exercises
 
 * [Exercise 1](exercises/1.md)
+* [Exercise 2](exercises/2.md)
