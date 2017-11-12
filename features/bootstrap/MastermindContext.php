@@ -13,6 +13,11 @@ class MastermindContext implements Context
     private $numberOfAttempts = 12;
 
     /**
+     * @var GameUuid
+     */
+    private $gameUuid;
+
+    /**
      * @Given a decoding board of :numberOfAttempts attempts
      */
     public function aDecodingBoardOfGuesses($numberOfAttempts)
@@ -29,7 +34,7 @@ class MastermindContext implements Context
         $codeLength = substr_count($code, ' ') + 1;
 
         $startGameUseCase = new StartGameUseCase();
-        $startGameUseCase->execute($codeLength);
+        $this->gameUuid = $startGameUseCase->execute($codeLength);
     }
 
     /**
@@ -37,7 +42,8 @@ class MastermindContext implements Context
      */
     public function iTryToBreakTheCodeWith($code)
     {
-        throw new PendingException();
+        $makeGuessUseCase = new MakeGuessUseCase();
+        $makeGuessUseCase->execute($this->gameUuid, Code::fromString($code));
     }
 
     /**
