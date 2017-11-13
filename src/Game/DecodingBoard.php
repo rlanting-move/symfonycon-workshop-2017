@@ -57,4 +57,9 @@ class DecodingBoard
     {
         return end($this->feedback) ?: null;
     }
+
+    public function isGameWon(): bool
+    {
+        return true;
+    }
 }
