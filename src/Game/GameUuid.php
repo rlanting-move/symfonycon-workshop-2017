@@ -9,4 +9,9 @@ class GameUuid
     {
         return new GameUuid();
     }
+
+    public function __toString(): string
+    {
+        return '';
+    }
 }
