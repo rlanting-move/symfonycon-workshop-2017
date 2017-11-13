@@ -26,10 +26,17 @@ final class SessionDecodingBoards implements DecodingBoards
      */
     public function get(GameUuid $uuid): DecodingBoard
     {
-        throw new DecodingBoardNotFoundException($uuid);
+        $board = $this->session->get((string) $uuid);
+
+        if (!$board instanceof DecodingBoard) {
+            throw new DecodingBoardNotFoundException($uuid);
+        }
+
+        return $board;
     }
 
     public function put(DecodingBoard $decodingBoard)
     {
+        $this->session->set((string) $decodingBoard->gameUuid(), $decodingBoard);
     }
 }
