@@ -20,14 +20,7 @@ class Code
 
     public static function fromString(string $codeString): Code
     {
-        return new self(
-            array_map(
-                function (string $colour) {
-                    return new CodePeg($colour);
-                },
-                explode(' ', $codeString)
-            )
-        );
+        return self::fromColours(explode(' ', $codeString));
     }
 
     /**
