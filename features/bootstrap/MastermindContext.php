@@ -49,12 +49,7 @@ class MastermindContext implements Context
      */
     public function theCodeMakerPlacedThePatternOnTheBoard(Code $code)
     {
-        $startGameUseCase = new StartGameUseCase(
-            $this->decodingBoards,
-            new InMemoryCodeMaker($code),
-            $this->numberOfAttempts
-        );
-        $this->gameUuid = $startGameUseCase->execute($code->length());
+        $this->gameUuid = $this->startGameUseCase($code)->execute($code->length());
     }
 
     /**
@@ -62,8 +57,7 @@ class MastermindContext implements Context
      */
     public function iTryToBreakTheCodeWith(Code $code)
     {
-        $makeGuessUseCase = new MakeGuessUseCase($this->decodingBoards);
-        $makeGuessUseCase->execute($this->gameUuid, $code);
+        $this->makeGuessUseCase()->execute($this->gameUuid, $code);
     }
 
     /**
@@ -71,8 +65,7 @@ class MastermindContext implements Context
      */
     public function theCodeMakerShouldGiveMeFeedbackOnMyGuess($feedback)
     {
-        $viewDecodingBoardUseCase = new ViewDecodingBoardUseCase($this->decodingBoards);
-        $board = $viewDecodingBoardUseCase->execute($this->gameUuid);
+        $board = $this->viewDecodingBoardUseCase()->execute($this->gameUuid);
 
         Assert::assertInstanceOf(Feedback::class, $board->lastFeedback(), 'Feedback on the last guess attempt was given.');
         Assert::assertSame(substr_count($feedback, 'X'), $board->lastFeedback()->exactHits());
@@ -117,5 +110,20 @@ class MastermindContext implements Context
     public function transformCodeStringToCode(string $code)
     {
         return Code::fromString($code);
+    }
+
+    private function startGameUseCase(Code $code): StartGameUseCase
+    {
+        return new StartGameUseCase($this->decodingBoards, new InMemoryCodeMaker($code), $this->numberOfAttempts);
+    }
+
+    private function makeGuessUseCase(): MakeGuessUseCase
+    {
+        return  new MakeGuessUseCase($this->decodingBoards);
+    }
+
+    private function viewDecodingBoardUseCase(): ViewDecodingBoardUseCase
+    {
+        return new ViewDecodingBoardUseCase($this->decodingBoards);
     }
 }
