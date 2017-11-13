@@ -3,14 +3,23 @@ declare(strict_types=1);
 
 namespace SymfonyCon\Mastermind\UseCase;
 
-use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\Game\DecodingBoard;
-use SymfonyCon\Mastermind\Game\GameUuid;
+use SymfonyCon\Mastermind\Game\DecodingBoards;
 
 class ViewDecodingBoardUseCase
 {
-    public function execute($gameUuid)
+    /**
+     * @var DecodingBoards
+     */
+    private $boards;
+
+    public function __construct(DecodingBoards $boards)
     {
-        return new DecodingBoard(GameUuid::generated(), Code::fromString('Red'), 12);
+        $this->boards = $boards;
+    }
+
+    public function execute($gameUuid): DecodingBoard
+    {
+        return $this->boards->get($gameUuid);
     }
 }
