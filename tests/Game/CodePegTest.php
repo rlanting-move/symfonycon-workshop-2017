@@ -29,4 +29,11 @@ class CodePegTest extends TestCase
 
         $this->assertFalse($codePeg->equals($anotherCodePeg));
     }
+
+    public function test_it_throws_an_unknown_colour_exception_if_initialized_with_an_unsupported_colour()
+    {
+        $this->expectException(UnknownColourException::class);
+
+        new CodePeg('Yellowish');
+    }
 }
