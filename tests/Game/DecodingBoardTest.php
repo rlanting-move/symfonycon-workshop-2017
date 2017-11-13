@@ -7,15 +7,22 @@ use PHPUnit\Framework\TestCase;
 
 class DecodingBoardTest extends TestCase
 {
-    public function test_it_is_initialized()
-    {
-        $this->assertInstanceOf(DecodingBoard::class, new DecodingBoard());
-    }
+    const NUMBER_OF_ATTEMPTS = 12;
 
-    public function test_it_returns_last_feedback()
+    public function test_makeGuess_gives_feedback_on_the_guess()
     {
-        $board = new DecodingBoard();
+        $uuid = GameUuid::existing('547bf8e4-1a9c-492e-a0cf-165b809585a2');
+        $exactHits = 1;
+        $colourHits = 3;
+        $guessCode = $this->prophesize(Code::class);
+        $secretCode = $this->prophesize(Code::class);
 
-        $this->assertInstanceOf(Feedback::class, $board->lastFeedback());
+        $secretCode->exactHits($guessCode)->willReturn($exactHits);
+        $secretCode->colourHits($guessCode)->willReturn($colourHits);
+
+        $board = new DecodingBoard($uuid, $secretCode->reveal(), self::NUMBER_OF_ATTEMPTS);
+        $feedback = $board->makeGuess($guessCode->reveal());
+
+        $this->assertEquals(new Feedback($guessCode->reveal(), $exactHits, $colourHits), $feedback);
     }
 }
