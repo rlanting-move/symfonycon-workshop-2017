@@ -93,4 +93,9 @@ class DecodingBoardTest extends TestCase
         $this->assertInstanceOf(Feedback::class, $lastFeedback);
         $this->assertSame($code2, $lastFeedback->guessCode());
     }
+
+    public function test_lastFeedback_returns_null_for_last_feedback_if_there_was_no_guess_attempt_yet()
+    {
+        $this->assertNull($this->board->lastFeedback());
+    }
 }
