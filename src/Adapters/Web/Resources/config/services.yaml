@@ -9,6 +9,6 @@ services:
     SymfonyCon\Mastermind\UseCase\:
         resource: '../../../../UseCase/*'
 
-#    SymfonyCon\Mastermind\Adapters\Web\Controller\:
-#        resource: '../../../../Adapters/Web/Controller'
-#        tags: ['controller.service_arguments']
+    SymfonyCon\Mastermind\Adapters\Web\Controller\:
+        resource: '../../../../Adapters/Web/Controller'
+        tags: ['controller.service_arguments']

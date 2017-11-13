@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SymfonyCon\Mastermind\Adapters\Web;
 
@@ -24,21 +24,54 @@ class WebIntegrationTest extends WebTestCase
         $this->client->followRedirects();
     }
 
-    public function test_it_returns_404()
+    public function test_play_the_game()
     {
-        $this->client->request('GET', '/');
+        $this->startNewGame();
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode(), $this->extractLastResponseTitle());
+        $this->assertResponseSuccess();
+    }
+
+    private function startNewGame()
+    {
+        try {
+            $crawler = $this->client->request('GET', '/');
+
+            $this->client->submit($crawler->selectButton('Start a new game')->form());
+
+            $this->assertResponseSuccess();
+        } catch (\InvalidArgumentException $e) {
+            $this->handleException($e);
+        }
+    }
+
+    private function assertResponseSuccess()
+    {
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), $this->extractLastResponseTitle());
     }
 
     private function extractLastResponseTitle(): string
     {
         return html_entity_decode(
-            (string) preg_replace(
+            (string)preg_replace(
                 '#.*?<title>(.*?)</title>.*#smi',
                 '$1',
                 $this->client->getResponse()->getContent()
             )
         );
+    }
+
+    private function handleException(\Throwable $e)
+    {
+        $message = $this->extractLastResponseTitle();
+
+        if (empty($message)) {
+            $message = sprintf('Got a %d response.', $this->client->getResponse()->getStatusCode());
+        }
+
+        if (preg_match('/The current node list is empty/i', $e->getMessage())) {
+            $message .= ' Failed to find expected elements on the page.';
+        }
+
+        throw new \RuntimeException($message, 0, $e);
     }
 }
