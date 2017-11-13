@@ -7,8 +7,18 @@ use PHPUnit\Framework\TestCase;
 
 class CodeTest extends TestCase
 {
-    public function test_it_is_initialized()
+    public function test_it_is_created_from_a_string_of_code_pegs()
     {
-        $this->assertInstanceOf(Code::class, Code::fromString(''));
+        $code = Code::fromString('Red Green Blue');
+
+        $this->assertInstanceOf(Code::class, $code);
+        $this->assertEquals(
+            [
+                new CodePeg('Red'),
+                new CodePeg('Green'),
+                new CodePeg('Blue'),
+            ],
+            $code->pegs()
+        );
     }
 }
