@@ -10,6 +10,7 @@ use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\Game\CodeMaker;
 use SymfonyCon\Mastermind\Game\DecodingBoard;
 use SymfonyCon\Mastermind\Game\DecodingBoards;
+use SymfonyCon\Mastermind\Game\GameUuid;
 
 class StartGameUseCaseTest extends TestCase
 {
@@ -49,6 +50,21 @@ class StartGameUseCaseTest extends TestCase
         $this->useCase->execute(self::CODE_LENGTH);
 
         $this->boards->put(Argument::type(DecodingBoard::class))->shouldHaveBeenCalled();
+    }
+
+    public function test_it_returns_the_game_uuid()
+    {
+        $this->codeMaker->newCode(self::CODE_LENGTH)->willReturn($this->getCode());
+
+        $uuid = $this->useCase->execute(self::CODE_LENGTH);
+
+        $this->assertInstanceOf(GameUuid::class, $uuid);
+
+        $this->boards->put(Argument::that(function (DecodingBoard $board) use ($uuid) {
+            $this->assertSame($uuid , $board->gameUuid());
+
+            return true;
+        }))->shouldHaveBeenCalled();
     }
 
     private function getCode(): Code
