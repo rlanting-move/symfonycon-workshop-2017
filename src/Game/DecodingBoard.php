@@ -70,7 +70,7 @@ class DecodingBoard
 
     public function isGameFinished(): bool
     {
-        return true;
+        return $this->isGameWon();
     }
 
     private function areAnyAttemptsLeft(): bool
