@@ -7,5 +7,6 @@ class GameUuid
 {
     public static function existing($string)
     {
+        return new GameUuid();
     }
 }
