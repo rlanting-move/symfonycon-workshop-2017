@@ -75,4 +75,14 @@ class CodeTest extends TestCase
             ],
         ];
     }
+
+    public function test_colourHits_counts_colour_only_hits()
+    {
+        $code = Code::fromString('Red Green Yellow Blue');
+        $anotherCode = Code::fromString('Purple Purple Purple Purple');
+
+        $hits = $code->colourHits($anotherCode);
+
+        $this->assertSame(0, $hits);
+    }
 }
