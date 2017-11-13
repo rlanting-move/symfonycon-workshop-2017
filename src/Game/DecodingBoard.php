@@ -68,6 +68,11 @@ class DecodingBoard
         return $this->areAnyAttemptsLeft() && !$this->isGameWon();
     }
 
+    public function isGameFinished(): bool
+    {
+        return true;
+    }
+
     private function areAnyAttemptsLeft(): bool
     {
         return count($this->feedback) >= $this->numberOfAttempts;
