@@ -192,4 +192,9 @@ class DecodingBoardTest extends TestCase
     {
         $this->assertSame($this->uuid, $this->board->gameUuid());
     }
+
+    public function test_it_exposes_number_of_pegs_of_the_secret_code()
+    {
+        $this->assertSame(self::SECRET_LENGTH, $this->board->numberOfPegs());
+    }
 }
