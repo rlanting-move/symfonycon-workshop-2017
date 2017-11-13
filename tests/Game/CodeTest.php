@@ -144,4 +144,11 @@ class CodeTest extends TestCase
             ],
         ];
     }
+
+    public function test_length_returns_the_number_of_pegs()
+    {
+        $code = Code::fromString('Red Purple Green Yellow Green');
+
+        $this->assertSame(5, $code->length());
+    }
 }
