@@ -32,6 +32,14 @@ class Code
 
     public static function fromColours($array)
     {
+        return new self(
+            array_map(
+                function (string $colour) {
+                    return new CodePeg($colour);
+                },
+                $array
+            )
+        );
     }
 
     /**
