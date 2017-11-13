@@ -97,6 +97,11 @@ class CodeTest extends TestCase
                 'Purple Purple Purple Purple',
                 0,
             ],
+            [
+                'Red Green Yellow Blue',
+                'Purple Red Purple Purple',
+                1,
+            ],
         ];
     }
 }
