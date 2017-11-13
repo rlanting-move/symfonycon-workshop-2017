@@ -27,6 +27,7 @@ class WebIntegrationTest extends WebTestCase
     public function test_play_the_game()
     {
         $this->startNewGame();
+        $this->makeGuess(['Red', 'Red', 'Red', 'Red']);
 
         $this->assertResponseSuccess();
     }
@@ -39,6 +40,23 @@ class WebIntegrationTest extends WebTestCase
             $this->client->submit($crawler->selectButton('Start a new game')->form());
 
             $this->assertResponseSuccess();
+        } catch (\InvalidArgumentException $e) {
+            $this->handleException($e);
+        }
+    }
+
+    private function makeGuess(array $colours)
+    {
+        try {
+            $crawler = $this->client->getCrawler();
+
+            $form = $crawler->selectButton('Break the code!')->form();
+            foreach ($colours as $i => $colour) {
+                $field = sprintf('guess_form[peg_%d]', $i + 1);
+                $form[$field]->select('Red');
+            }
+
+            $this->client->submit($form);
         } catch (\InvalidArgumentException $e) {
             $this->handleException($e);
         }
