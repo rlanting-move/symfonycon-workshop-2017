@@ -5,6 +5,7 @@ namespace SymfonyCon\Mastermind\Adapters\Web;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * @group integration
@@ -27,9 +28,12 @@ class WebIntegrationTest extends WebTestCase
     public function test_play_the_game()
     {
         $this->startNewGame();
-        $this->makeGuess(['Red', 'Red', 'Red', 'Red']);
-
-        $this->assertResponseSuccess();
+        $this->makeGuess(['Red', 'Green', 'Blue', 'Yellow']);
+        $this->makeGuess(['Green', 'Green', 'Purple', 'Purple']);
+        $this->verifyGuesses([
+            ['Red', 'Green', 'Blue', 'Yellow'],
+            ['Green', 'Green', 'Purple', 'Purple'],
+        ]);
     }
 
     private function startNewGame()
@@ -53,10 +57,26 @@ class WebIntegrationTest extends WebTestCase
             $form = $crawler->selectButton('Break the code!')->form();
             foreach ($colours as $i => $colour) {
                 $field = sprintf('guess_form[peg_%d]', $i + 1);
-                $form[$field]->select('Red');
+                $form[$field]->select($colour);
             }
 
             $this->client->submit($form);
+
+            $this->assertResponseSuccess();
+        } catch (\InvalidArgumentException $e) {
+            $this->handleException($e);
+        }
+    }
+
+    private function verifyGuesses(array $expectedGuesses)
+    {
+        try {
+            $guesses = $this->client->getCrawler()->filter('ul.decoding-board li')->each(function (Crawler $crawler) {
+                return $crawler->filter('button.guess')->each(function (Crawler $crawler) {
+                    return (string) $crawler->attr('data-colour');
+                });
+            });
+            $this->assertSame($expectedGuesses, $guesses);
         } catch (\InvalidArgumentException $e) {
             $this->handleException($e);
         }
