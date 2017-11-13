@@ -6,6 +6,7 @@ namespace SymfonyCon\Mastermind\Adapters\Web\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use SymfonyCon\Mastermind\Game\Code;
@@ -26,7 +27,7 @@ class GuessForm extends AbstractType
                 ]
             );
         }
-
+        $builder->add('submit', SubmitType::class, ['label' => 'Break the code!']);
         $builder->addModelTransformer(
             new CallbackTransformer(
                 function () {},
