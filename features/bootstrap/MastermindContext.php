@@ -27,6 +27,29 @@ class MastermindContext implements Context
     private $gameUuid;
 
     /**
+     * @var DecodingBoards
+     */
+    private $decodingBoards;
+
+    public function __construct()
+    {
+        $this->decodingBoards = new class implements DecodingBoards
+        {
+            private $boards = [];
+
+            public function get(GameUuid $uuid): DecodingBoard
+            {
+                return $this->boards[(string) $uuid];
+            }
+
+            public function put(DecodingBoard $decodingBoard)
+            {
+                $this->boards[(string) $decodingBoard->gameUuid()] = $decodingBoard;
+            }
+        };
+    }
+
+    /**
      * @Given a decoding board of :numberOfAttempts attempts
      */
     public function aDecodingBoardOfGuesses($numberOfAttempts)
@@ -43,16 +66,7 @@ class MastermindContext implements Context
         $codeLength = substr_count($code, ' ') + 1;
 
         $startGameUseCase = new StartGameUseCase(
-            new class implements DecodingBoards
-            {
-                public function get(GameUuid $uuid): DecodingBoard
-                {
-                }
-
-                public function put(DecodingBoard $decodingBoard)
-                {
-                }
-            },
+            $this->decodingBoards,
             new class(Code::fromString($code)) implements CodeMaker
             {
                 private $code;
@@ -77,7 +91,7 @@ class MastermindContext implements Context
      */
     public function iTryToBreakTheCodeWith($code)
     {
-        $makeGuessUseCase = new MakeGuessUseCase();
+        $makeGuessUseCase = new MakeGuessUseCase($this->decodingBoards);
         $makeGuessUseCase->execute($this->gameUuid, Code::fromString($code));
     }
 
@@ -86,7 +100,7 @@ class MastermindContext implements Context
      */
     public function theCodeMakerShouldGiveMeFeedbackOnMyGuess($feedback)
     {
-        $viewDecodingBoardUseCase = new ViewDecodingBoardUseCase();
+        $viewDecodingBoardUseCase = new ViewDecodingBoardUseCase($this->decodingBoards);
         $board = $viewDecodingBoardUseCase->execute($this->gameUuid);
 
         Assert::assertInstanceOf(Feedback::class, $board->lastFeedback(), 'Feedback on the last guess attempt was given.');

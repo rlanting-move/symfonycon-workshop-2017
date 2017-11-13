@@ -1,4 +1,3 @@
-@wip
 Feature: Playing mastermind
   As a code breaker
   I want to practice breaking codes
@@ -33,12 +32,14 @@ Feature: Playing mastermind
       | Red Red Blue Yellow   | Purple Purple Red Purple    | O        |
       | Red Blue Blue Yellow  | Purple Purple Red Red       | O        |
 
+  @wip
   Scenario: Winning a game
     Given the code maker placed the "Red Green Blue Yellow" pattern on the board
     When I try to break the code with an invalid pattern 11 times
     But I break the code in the final guess
     Then I should win the game
 
+  @wip
   Scenario: Loosing a game
     Given the code maker placed the "Red Green Blue Yellow" pattern on the board
     When I try to break the code with an invalid pattern 12 times
