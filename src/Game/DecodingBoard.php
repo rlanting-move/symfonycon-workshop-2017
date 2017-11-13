@@ -77,4 +77,9 @@ class DecodingBoard
     {
         return count($this->feedback) >= $this->numberOfAttempts;
     }
+
+    public function gameUuid(): GameUuid
+    {
+        return $this->gameUuid;
+    }
 }
