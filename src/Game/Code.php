@@ -52,7 +52,7 @@ class Code
         return count($this->getPegsWithExactHits($anotherCode));
     }
 
-    public function colourHits($anotherCode)
+    public function colourHits(Code $anotherCode): int
     {
         $hits = 0;
 
