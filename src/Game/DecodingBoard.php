@@ -82,4 +82,9 @@ class DecodingBoard
     {
         return $this->gameUuid;
     }
+
+    public function numberOfPegs(): int
+    {
+        return $this->secretCode->length();
+    }
 }
