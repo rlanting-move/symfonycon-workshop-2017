@@ -57,8 +57,8 @@ class Code
         $positionsCounted = [];
 
         foreach ($this->getPegsWithNoExactHits($anotherCode) as $position => $codePeg) {
-            foreach ($anotherCode->codePegs as $anotherPosition => $anotherCodePeg) {
-                if ($codePeg->equals($anotherCodePeg) && !$this->hasSamePegOnPosition($anotherPosition, $anotherCodePeg)  && !isset($positionsCounted[$anotherPosition])) {
+            foreach ($anotherCode->getPegsWithNoExactHits($this) as $anotherPosition => $anotherCodePeg) {
+                if ($codePeg->equals($anotherCodePeg) && !isset($positionsCounted[$anotherPosition])) {
                     $positionsCounted[$anotherPosition] = true;
 
                     break;
