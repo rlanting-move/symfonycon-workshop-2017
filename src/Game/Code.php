@@ -9,4 +9,8 @@ class Code
     {
         return new self();
     }
+
+    public function pegs()
+    {
+    }
 }
