@@ -53,8 +53,8 @@ class DecodingBoard
         return $this->feedback;
     }
 
-    public function lastFeedback(): Feedback
+    public function lastFeedback(): ?Feedback
     {
-        return end($this->feedback);
+        return end($this->feedback) ?: null;
     }
 }
