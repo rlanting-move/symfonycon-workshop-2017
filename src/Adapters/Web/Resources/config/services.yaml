@@ -12,3 +12,13 @@ services:
     SymfonyCon\Mastermind\Adapters\Web\Controller\:
         resource: '../../../../Adapters/Web/Controller'
         tags: ['controller.service_arguments']
+
+    SymfonyCon\Mastermind\UseCase\StartGameUseCase:
+        arguments:
+            $numberOfAttempts: 12
+
+    SymfonyCon\Mastermind\Game\DecodingBoards: '@SymfonyCon\Mastermind\Adapters\Session\SessionDecodingBoards'
+    SymfonyCon\Mastermind\Adapters\Session\SessionDecodingBoards: ~
+
+    SymfonyCon\Mastermind\Game\CodeMaker: '@SymfonyCon\Mastermind\Game\RandomCodeMaker'
+    SymfonyCon\Mastermind\Game\RandomCodeMaker: ~
