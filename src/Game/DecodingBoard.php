@@ -53,8 +53,8 @@ class DecodingBoard
         return $this->feedback;
     }
 
-    public function lastFeedback()
+    public function lastFeedback(): Feedback
     {
-        return new Feedback(Code::fromString('Red'), 0, 0);
+        return end($this->feedback);
     }
 }
