@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace SymfonyCon\Mastermind\Game;
 
+use Ramsey\Uuid\Uuid;
+
 class GameUuid
 {
     /**
@@ -18,6 +20,11 @@ class GameUuid
     public static function existing(string $uuid): GameUuid
     {
         return new GameUuid($uuid);
+    }
+
+    public static function generated(): GameUuid
+    {
+        return new GameUuid((string) Uuid::uuid4());
     }
 
     public function __toString(): string
