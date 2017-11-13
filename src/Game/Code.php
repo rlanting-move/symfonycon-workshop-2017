@@ -52,11 +52,16 @@ class Code
         $hits = 0;
 
         foreach ($this->codePegs as $position => $codePeg) {
-            if ($codePeg->equals($anotherCode->codePegs[$position])) {
+            if ($anotherCode->hasSamePegOnPosition($position, $codePeg)) {
                 $hits = $hits + 1;
             }
         }
 
         return $hits;
+    }
+
+    private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
+    {
+        return $this->codePegs[$position]->equals($codePeg);
     }
 }
