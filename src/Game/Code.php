@@ -46,4 +46,8 @@ class Code
     {
         return $this->codePegs;
     }
+
+    public function exactHits($anotherCode)
+    {
+    }
 }
