@@ -27,7 +27,7 @@ class DecodingBoard
         $this->numberOfAttempts = $numberOfAttempts;
     }
 
-    public function makeGuess(Code $code)
+    public function makeGuess(Code $code): Feedback
     {
         return new Feedback(
             $code,
