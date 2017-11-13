@@ -49,13 +49,26 @@ class Code
 
     public function exactHits(Code $anotherCode): int
     {
-        return count(array_filter($this->codePegs, function (CodePeg $codePeg, int $position) use ($anotherCode) {
-            return $anotherCode->hasSamePegOnPosition($position, $codePeg);
-        }, ARRAY_FILTER_USE_BOTH));
+        return count($this->getPegsWithExactHits($anotherCode));
     }
 
     private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
     {
         return $this->codePegs[$position]->equals($codePeg);
+    }
+
+    /**
+     * @param Code $anotherCode
+     * @return CodePeg[]
+     */
+    private function getPegsWithExactHits(Code $anotherCode): array
+    {
+        return array_filter(
+            $this->codePegs,
+            function (CodePeg $codePeg, int $position) use ($anotherCode) {
+                return $anotherCode->hasSamePegOnPosition($position, $codePeg);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 }
