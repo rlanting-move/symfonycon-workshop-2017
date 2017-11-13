@@ -187,4 +187,9 @@ class DecodingBoardTest extends TestCase
 
         $this->assertTrue($this->board->isGameFinished());
     }
+
+    public function test_gameUuid_exposes_the_game_uuid()
+    {
+        $this->assertSame($this->uuid, $this->board->gameUuid());
+    }
 }
