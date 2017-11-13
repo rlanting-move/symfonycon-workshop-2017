@@ -30,6 +30,10 @@ class Code
         );
     }
 
+    public static function fromColours($array)
+    {
+    }
+
     /**
      * @return CodePeg[]
      */
