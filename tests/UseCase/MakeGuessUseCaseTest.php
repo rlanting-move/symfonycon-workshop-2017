@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SymfonyCon\Mastermind\UseCase;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\Game\DecodingBoard;
 use SymfonyCon\Mastermind\Game\DecodingBoards;
