@@ -65,6 +65,6 @@ class DecodingBoard
 
     public function isGameLost(): bool
     {
-        return count($this->feedback) >= $this->numberOfAttempts;
+        return count($this->feedback) >= $this->numberOfAttempts && !$this->isGameWon();
     }
 }
