@@ -10,6 +10,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 class DecodingBoardTest extends TestCase
 {
     const NUMBER_OF_ATTEMPTS = 12;
+    const SECRET_LENGTH = 4;
 
     /**
      * @var DecodingBoard
@@ -97,5 +98,14 @@ class DecodingBoardTest extends TestCase
     public function test_lastFeedback_returns_null_for_last_feedback_if_there_was_no_guess_attempt_yet()
     {
         $this->assertNull($this->board->lastFeedback());
+    }
+
+    public function test_the_game_is_won_if_all_colours_and_positions_are_guessed()
+    {
+        $this->secretCode->exactHits($this->guessCode)->willReturn(self::SECRET_LENGTH);
+
+        $this->board->makeGuess($this->guessCode->reveal());
+
+        $this->assertTrue($this->board->isGameWon());
     }
 }
