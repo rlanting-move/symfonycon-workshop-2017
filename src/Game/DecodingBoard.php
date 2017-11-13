@@ -25,6 +25,11 @@ class DecodingBoard
      */
     private $attemptsUsed = 0;
 
+    /**
+     * @var Feedback[]
+     */
+    private $feedback = [];
+
     public function __construct(GameUuid $gameUuid, Code $secretCode, int $numberOfAttempts)
     {
         $this->gameUuid = $gameUuid;
@@ -40,11 +45,19 @@ class DecodingBoard
 
         $this->attemptsUsed++;
 
-        return new Feedback(
+        return $this->feedback[] = new Feedback(
             $code,
             $this->secretCode->exactHits($code),
             $this->secretCode->colourHits($code)
         );
+    }
+
+    /**
+     * @return Feedback[]
+     */
+    public function allFeedback(): array
+    {
+        return $this->feedback;
     }
 
     public function lastFeedback()
