@@ -56,9 +56,9 @@ class Code
     {
         $positionsCounted = [];
 
-        foreach ($this->codePegs as $position => $codePeg) {
+        foreach ($this->getPegsWithNoExactHits($anotherCode) as $position => $codePeg) {
             foreach ($anotherCode->codePegs as $anotherPosition => $anotherCodePeg) {
-                if ($codePeg->equals($anotherCodePeg) && !$anotherCode->hasSamePegOnPosition($position, $codePeg) && !$this->hasSamePegOnPosition($anotherPosition, $anotherCodePeg)  && !isset($positionsCounted[$anotherPosition])) {
+                if ($codePeg->equals($anotherCodePeg) && !$this->hasSamePegOnPosition($anotherPosition, $anotherCodePeg)  && !isset($positionsCounted[$anotherPosition])) {
                     $positionsCounted[$anotherPosition] = true;
 
                     break;
@@ -84,6 +84,21 @@ class Code
             $this->codePegs,
             function (CodePeg $codePeg, int $position) use ($anotherCode) {
                 return $anotherCode->hasSamePegOnPosition($position, $codePeg);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
+    }
+
+    /**
+     * @param Code $anotherCode
+     * @return CodePeg[]
+     */
+    private function getPegsWithNoExactHits(Code $anotherCode): array
+    {
+        return array_filter(
+            $this->codePegs,
+            function (CodePeg $peg, int $position) use ($anotherCode) {
+                return !$anotherCode->hasSamePegOnPosition($position, $peg);
             },
             ARRAY_FILTER_USE_BOTH
         );
