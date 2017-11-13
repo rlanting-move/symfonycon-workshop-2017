@@ -54,17 +54,17 @@ class Code
 
     public function colourHits(Code $anotherCode): int
     {
-        $hits = 0;
+        $positionsCounted = [];
 
         foreach ($this->codePegs as $position => $codePeg) {
             foreach ($anotherCode->codePegs as $anotherPosition => $anotherCodePeg) {
                 if ($codePeg->equals($anotherCodePeg) && !$anotherCode->hasSamePegOnPosition($position, $codePeg)) {
-                    $hits = $hits + 1;
+                    $positionsCounted[$position] = true;
                 }
             }
         }
 
-        return $hits;
+        return count($positionsCounted);
     }
 
     private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
