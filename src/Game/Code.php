@@ -54,6 +54,7 @@ class Code
 
     public function colourHits($anotherCode)
     {
+        return 0;
     }
 
     private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
