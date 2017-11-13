@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SymfonyCon\Mastermind\Adapters\Web\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use SymfonyCon\Mastermind\UseCase\StartGameUseCase;
 
@@ -35,6 +35,6 @@ class StartGameController
     {
         $gameUuid = $this->useCase->execute(self::DEFAULT_CODE_LENGTH);
 
-        return new Response($this->router->generate('mastermind.board', ['uuid' => (string) $gameUuid]));
+        return new RedirectResponse($this->router->generate('mastermind.board', ['uuid' => (string)$gameUuid]));
     }
 }
