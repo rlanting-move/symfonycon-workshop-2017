@@ -56,10 +56,10 @@ class Code
     {
         $positionsCounted = [];
 
-        foreach ($this->getPegsWithNoExactHits($anotherCode) as $position => $codePeg) {
-            foreach ($anotherCode->getPegsWithNoExactHits($this) as $anotherPosition => $anotherCodePeg) {
-                if ($codePeg->equals($anotherCodePeg) && !isset($positionsCounted[$anotherPosition])) {
-                    $positionsCounted[$anotherPosition] = true;
+        foreach ($this->getPegsWithNoExactHits($anotherCode) as $codePeg) {
+            foreach ($anotherCode->getPegsWithNoExactHits($this) as $position => $anotherCodePeg) {
+                if ($codePeg->equals($anotherCodePeg) && !isset($positionsCounted[$position])) {
+                    $positionsCounted[$position] = true;
 
                     break;
                 }
