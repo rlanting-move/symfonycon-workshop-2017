@@ -60,6 +60,6 @@ class DecodingBoard
 
     public function isGameWon(): bool
     {
-        return $this->lastFeedback()->exactHits() === $this->secretCode->length();
+        return null !== $this->lastFeedback() && $this->lastFeedback()->exactHits() === $this->secretCode->length();
     }
 }
