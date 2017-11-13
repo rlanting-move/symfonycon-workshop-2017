@@ -63,4 +63,20 @@ class DecodingBoardTest extends TestCase
             $this->board->makeGuess($this->guessCode->reveal());
         }
     }
+
+    public function test_allFeedback_exposes_all_past_feedback()
+    {
+        $code1 = $this->prophesize(Code::class)->reveal();
+        $code2 = $this->prophesize(Code::class)->reveal();
+
+        $this->board->makeGuess($code1);
+        $this->board->makeGuess($code2);
+
+        $allFeedback = $this->board->allFeedback();
+
+        $this->assertContainsOnly(Feedback::class, $allFeedback);
+        $this->assertCount(2, $allFeedback);
+        $this->assertSame($code1, $allFeedback[0]->guessCode());
+        $this->assertSame($code2, $allFeedback[1]->guessCode());
+    }
 }
