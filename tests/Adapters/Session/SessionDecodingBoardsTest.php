@@ -42,4 +42,15 @@ class DecodingBoardsTest extends TestCase
         $this->decodingBoards->put($board);
         $this->decodingBoards->get(GameUuid::existing(self::UUID));
     }
+
+    public function test_it_gets_the_previously_added_decoding_board()
+    {
+        $uuid = GameUuid::existing(self::UUID);
+        $board = new DecodingBoard($uuid, Code::fromString('Red Blue'), 12);
+
+        $this->decodingBoards->put($board);
+        $foundBoard = $this->decodingBoards->get(GameUuid::existing(self::UUID));
+
+        $this->assertEquals($board, $foundBoard);
+    }
 }
