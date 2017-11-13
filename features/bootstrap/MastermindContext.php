@@ -5,7 +5,11 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use SymfonyCon\Mastermind\Game\Code;
+use SymfonyCon\Mastermind\Game\CodeMaker;
+use SymfonyCon\Mastermind\Game\DecodingBoard;
+use SymfonyCon\Mastermind\Game\DecodingBoards;
 use SymfonyCon\Mastermind\Game\Feedback;
+use SymfonyCon\Mastermind\Game\GameUuid;
 use SymfonyCon\Mastermind\UseCase\MakeGuessUseCase;
 use SymfonyCon\Mastermind\UseCase\StartGameUseCase;
 use SymfonyCon\Mastermind\UseCase\ViewDecodingBoardUseCase;
@@ -27,7 +31,7 @@ class MastermindContext implements Context
      */
     public function aDecodingBoardOfGuesses($numberOfAttempts)
     {
-        $this->numberOfAttempts = (int) $numberOfAttempts;
+        $this->numberOfAttempts = (int)$numberOfAttempts;
     }
 
     /**
@@ -38,7 +42,33 @@ class MastermindContext implements Context
         // we're not doing much with the code yet, but at some point we'll need to stub the CodeMaker to return it
         $codeLength = substr_count($code, ' ') + 1;
 
-        $startGameUseCase = new StartGameUseCase();
+        $startGameUseCase = new StartGameUseCase(
+            new class implements DecodingBoards
+            {
+                public function get(GameUuid $uuid): DecodingBoard
+                {
+                }
+
+                public function put(DecodingBoard $decodingBoard)
+                {
+                }
+            },
+            new class(Code::fromString($code)) implements CodeMaker
+            {
+                private $code;
+
+                public function __construct(Code $code)
+                {
+                    $this->code = $code;
+                }
+
+                public function newCode(int $length): Code
+                {
+                    return $this->code;
+                }
+            },
+            $this->numberOfAttempts
+        );
         $this->gameUuid = $startGameUseCase->execute($codeLength);
     }
 
