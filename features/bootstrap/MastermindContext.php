@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
 use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryCodeMaker;
 use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryDecodingBoards;
@@ -16,6 +15,8 @@ use SymfonyCon\Mastermind\UseCase\ViewDecodingBoardUseCase;
 
 class MastermindContext implements Context
 {
+    const INVALID_PATTERN = 'Purple Purple Purple Purple';
+
     /**
      * @var int
      */
@@ -25,6 +26,11 @@ class MastermindContext implements Context
      * @var GameUuid
      */
     private $gameUuid;
+
+    /**
+     * @var Code
+     */
+    private $secretCode;
 
     /**
      * @var DecodingBoards
@@ -50,6 +56,7 @@ class MastermindContext implements Context
     public function theCodeMakerPlacedThePatternOnTheBoard(Code $code)
     {
         $this->gameUuid = $this->startGameUseCase($code)->execute($code->length());
+        $this->secretCode = $code;
     }
 
     /**
@@ -77,7 +84,9 @@ class MastermindContext implements Context
      */
     public function iTryToBreakTheCodeWithAnInvalidPatternTimes($number)
     {
-        throw new PendingException();
+        for ($i = 0; $i < $number; $i++) {
+            $this->iTryToBreakTheCodeWith(Code::fromString(self::INVALID_PATTERN));
+        }
     }
 
     /**
@@ -85,7 +94,7 @@ class MastermindContext implements Context
      */
     public function iBreakTheCodeInTheFinalGuess()
     {
-        throw new PendingException();
+        $this->iTryToBreakTheCodeWith($this->secretCode);
     }
 
     /**
@@ -93,7 +102,9 @@ class MastermindContext implements Context
      */
     public function iShouldWinTheGame()
     {
-        throw new PendingException();
+        $board = $this->viewDecodingBoardUseCase()->execute($this->gameUuid);
+
+        Assert::assertTrue($board->isGameWon());
     }
 
     /**
@@ -101,7 +112,9 @@ class MastermindContext implements Context
      */
     public function iShouldLooseTheGame()
     {
-        throw new PendingException();
+        $board = $this->viewDecodingBoardUseCase()->execute($this->gameUuid);
+
+        Assert::assertTrue($board->isGameLost());
     }
 
     /**
