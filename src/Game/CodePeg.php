@@ -22,5 +22,6 @@ class CodePeg
 
     public function equals($anotherCodePeg)
     {
+        return true;
     }
 }
