@@ -49,15 +49,9 @@ class Code
 
     public function exactHits(Code $anotherCode): int
     {
-        $hits = 0;
-
-        foreach ($this->codePegs as $position => $codePeg) {
-            if ($anotherCode->hasSamePegOnPosition($position, $codePeg)) {
-                $hits = $hits + 1;
-            }
-        }
-
-        return $hits;
+        return count(array_filter($this->codePegs, function (CodePeg $codePeg, int $position) use ($anotherCode) {
+            return $anotherCode->hasSamePegOnPosition($position, $codePeg);
+        }, ARRAY_FILTER_USE_BOTH));
     }
 
     private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
