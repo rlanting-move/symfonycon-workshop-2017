@@ -25,6 +25,8 @@ class MakeGuessUseCase
         $board = $this->boards->get($gameUuid);
         $board->makeGuess($code);
 
+        $this->boards->put($board);
+
         return $board;
     }
 }

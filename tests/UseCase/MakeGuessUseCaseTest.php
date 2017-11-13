@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SymfonyCon\Mastermind\UseCase;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\Game\DecodingBoard;
@@ -53,6 +54,8 @@ class MakeGuessUseCaseTest extends TestCase
 
         $this->boards = $this->prophesize(DecodingBoards::class);
         $this->useCase = new MakeGuessUseCase($this->boards->reveal());
+
+        $this->boards->put(Argument::any())->willReturn();
     }
 
     public function test_it_makes_a_guess()
