@@ -36,4 +36,14 @@ class CodeTest extends TestCase
             $code->pegs()
         );
     }
+
+    public function test_exactHits_counts_colour_and_position_hits()
+    {
+        $code = Code::fromString('Red Green Yellow Blue');
+        $anotherCode = Code::fromString('Purple Purple Purple Purple');
+
+        $hits = $code->exactHits($anotherCode);
+
+        $this->assertSame(0, $hits);
+    }
 }
