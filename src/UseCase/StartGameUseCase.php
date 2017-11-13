@@ -32,7 +32,8 @@ class StartGameUseCase
         $this->codeMaker = $codeMaker;
         $this->numberOfAttempts = $numberOfAttempts;
     }
-    public function execute($codeLength)
+
+    public function execute(int $codeLength): GameUuid
     {
         $board = new DecodingBoard(
             GameUuid::generated(),
@@ -41,5 +42,7 @@ class StartGameUseCase
         );
 
         $this->boards->put($board);
+
+        return $board->gameUuid();
     }
 }
