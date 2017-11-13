@@ -17,8 +17,9 @@ services:
         arguments:
             $numberOfAttempts: 12
 
-    SymfonyCon\Mastermind\Game\DecodingBoards: '@SymfonyCon\Mastermind\Adapters\Session\SessionDecodingBoards'
+    SymfonyCon\Mastermind\Game\DecodingBoards: '@SymfonyCon\Mastermind\Adapters\Database\DoctrineDecodingBoards'
     SymfonyCon\Mastermind\Adapters\Session\SessionDecodingBoards: ~
+    SymfonyCon\Mastermind\Adapters\Database\DoctrineDecodingBoards: ~
 
     SymfonyCon\Mastermind\Game\CodeMaker: '@SymfonyCon\Mastermind\Game\RandomCodeMaker'
     SymfonyCon\Mastermind\Game\RandomCodeMaker: ~
