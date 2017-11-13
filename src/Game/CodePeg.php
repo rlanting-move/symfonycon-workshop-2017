@@ -5,4 +5,8 @@ namespace SymfonyCon\Mastermind\Game;
 
 class CodePeg
 {
+    public function __toString(): string
+    {
+        return '';
+    }
 }
