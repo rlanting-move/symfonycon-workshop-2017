@@ -7,8 +7,6 @@ use PHPUnit\Framework\Assert;
 use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryCodeMaker;
 use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryDecodingBoards;
 use SymfonyCon\Mastermind\Game\Code;
-use SymfonyCon\Mastermind\Game\CodeMaker;
-use SymfonyCon\Mastermind\Game\DecodingBoard;
 use SymfonyCon\Mastermind\Game\DecodingBoards;
 use SymfonyCon\Mastermind\Game\Feedback;
 use SymfonyCon\Mastermind\Game\GameUuid;
@@ -49,26 +47,23 @@ class MastermindContext implements Context
     /**
      * @Given the code maker placed the :code pattern on the board
      */
-    public function theCodeMakerPlacedThePatternOnTheBoard($code)
+    public function theCodeMakerPlacedThePatternOnTheBoard(Code $code)
     {
-        // we're not doing much with the code yet, but at some point we'll need to stub the CodeMaker to return it
-        $codeLength = substr_count($code, ' ') + 1;
-
         $startGameUseCase = new StartGameUseCase(
             $this->decodingBoards,
-            new InMemoryCodeMaker(Code::fromString($code)),
+            new InMemoryCodeMaker($code),
             $this->numberOfAttempts
         );
-        $this->gameUuid = $startGameUseCase->execute($codeLength);
+        $this->gameUuid = $startGameUseCase->execute($code->length());
     }
 
     /**
      * @When I try to break the code with :code
      */
-    public function iTryToBreakTheCodeWith($code)
+    public function iTryToBreakTheCodeWith(Code $code)
     {
         $makeGuessUseCase = new MakeGuessUseCase($this->decodingBoards);
-        $makeGuessUseCase->execute($this->gameUuid, Code::fromString($code));
+        $makeGuessUseCase->execute($this->gameUuid, $code);
     }
 
     /**
@@ -114,5 +109,13 @@ class MastermindContext implements Context
     public function iShouldLooseTheGame()
     {
         throw new PendingException();
+    }
+
+    /**
+     * @Transform :code
+     */
+    public function transformCodeStringToCode(string $code)
+    {
+        return Code::fromString($code);
     }
 }
