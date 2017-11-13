@@ -7,6 +7,6 @@ class DecodingBoard
 {
     public function lastFeedback()
     {
-        return new Feedback();
+        return new Feedback(Code::fromString('Red'), 0, 0);
     }
 }
