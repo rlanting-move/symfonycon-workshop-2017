@@ -21,11 +21,6 @@ class DecodingBoard
     private $numberOfAttempts;
 
     /**
-     * @var int
-     */
-    private $attemptsUsed = 0;
-
-    /**
      * @var Feedback[]
      */
     private $feedback = [];
@@ -39,11 +34,9 @@ class DecodingBoard
 
     public function makeGuess(Code $code): Feedback
     {
-        if ($this->attemptsUsed >= $this->numberOfAttempts) {
+        if (count($this->feedback) >= $this->numberOfAttempts) {
             throw new NoAttemptsLeftException($this->numberOfAttempts);
         }
-
-        $this->attemptsUsed++;
 
         return $this->feedback[] = new Feedback(
             $code,
