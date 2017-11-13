@@ -21,4 +21,12 @@ class RandomCodeMakerTest extends TestCase
     {
         $this->assertInstanceOf(CodeMaker::class, $this->codeMaker);
     }
+
+    public function test_it_returns_a_code_of_given_length()
+    {
+        $code = $this->codeMaker->newCode(3);
+
+        $this->assertInstanceOf(Code::class, $code);
+        $this->assertSame(3, $code->length());
+    }
 }
