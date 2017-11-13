@@ -15,9 +15,9 @@ class GameUuid
         $this->uuid = $uuid;
     }
 
-    public static function existing($string)
+    public static function existing(string $uuid): GameUuid
     {
-        return new GameUuid($string);
+        return new GameUuid($uuid);
     }
 
     public function __toString(): string
