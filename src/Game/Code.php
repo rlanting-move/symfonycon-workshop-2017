@@ -18,7 +18,7 @@ class Code
         $this->codePegs = $codePegs;
     }
 
-    public static function fromString($codeString)
+    public static function fromString(string $codeString): Code
     {
         return new self(
             array_map(
@@ -30,7 +30,10 @@ class Code
         );
     }
 
-    public function pegs()
+    /**
+     * @return CodePeg[]
+     */
+    public function pegs(): array
     {
         return $this->codePegs;
     }
