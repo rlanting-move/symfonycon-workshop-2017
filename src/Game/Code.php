@@ -103,4 +103,9 @@ class Code
             ARRAY_FILTER_USE_BOTH
         );
     }
+
+    public function length(): int
+    {
+        return count($this->codePegs);
+    }
 }
