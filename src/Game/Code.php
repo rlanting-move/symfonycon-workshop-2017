@@ -47,7 +47,7 @@ class Code
         return $this->codePegs;
     }
 
-    public function exactHits($anotherCode)
+    public function exactHits(Code $anotherCode): int
     {
         return 0;
     }
