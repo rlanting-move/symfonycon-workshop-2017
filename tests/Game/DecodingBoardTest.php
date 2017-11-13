@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SymfonyCon\Mastermind\Game;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class DecodingBoardTest extends TestCase
@@ -35,6 +36,9 @@ class DecodingBoardTest extends TestCase
         $this->uuid = GameUuid::existing('547bf8e4-1a9c-492e-a0cf-165b809585a2');
         $this->guessCode = $this->prophesize(Code::class);
         $this->secretCode = $this->prophesize(Code::class);
+        $this->secretCode->exactHits(Argument::any())->willReturn(0);
+        $this->secretCode->colourHits(Argument::any())->willReturn(0);
+
         $this->board = new DecodingBoard($this->uuid, $this->secretCode->reveal(), self::NUMBER_OF_ATTEMPTS);
     }
 
