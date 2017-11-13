@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SymfonyCon\Mastermind\Game;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class DecodingBoardTest extends TestCase
 {
@@ -48,5 +49,14 @@ class DecodingBoardTest extends TestCase
         $feedback = $this->board->makeGuess($this->guessCode->reveal());
 
         $this->assertEquals(new Feedback($this->guessCode->reveal(), $exactHits, $colourHits), $feedback);
+    }
+
+    public function test_makeGuess_throws_a_NoAttemptsLeftException_if_number_of_attempts_is_exceeded()
+    {
+        $this->expectException(NoAttemptsLeftException::class);
+
+        for ($i = 0; $i <= self::NUMBER_OF_ATTEMPTS; $i++) {
+            $this->board->makeGuess($this->guessCode->reveal());
+        }
     }
 }
