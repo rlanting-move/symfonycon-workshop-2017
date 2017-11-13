@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                <ul style="list-style-type: none;">
+                    {% for feedback in board.allFeedback %}
+                        <li>
+                            {% for peg in feedback.guessCode.pegs %}
+                                <button type="button" class="btn btn-default" aria-label="Left Align" style="background-color: {{ peg | lower }}">
+                                    &nbsp;
+                                </button>
+                            {% endfor %}
+                            &nbsp;&nbsp;
+                            {% for i in 1..feedback.exactHits if feedback.exactHits > 0 %}
+                                <span class="label label-primary">&nbsp;</span>
+                            {% endfor %}
+                            {% for i in 1..feedback.colourHits if feedback.colourHits > 0 %}
+                                <span class="label label-warning">&nbsp;</span>
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-2">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

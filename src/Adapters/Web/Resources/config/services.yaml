@@ -1,0 +1,14 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: false
+        public: false
+
+    SymfonyCon\Mastermind\UseCase\:
+        resource: '../../../../UseCase/*'
+
+#    SymfonyCon\Mastermind\Adapters\Web\Controller\:
+#        resource: '../../../../Adapters/Web/Controller'
+#        tags: ['controller.service_arguments']
