@@ -4,6 +4,8 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use PHPUnit\Framework\Assert;
+use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryCodeMaker;
+use SymfonyCon\Mastermind\Adapters\InMemory\InMemoryDecodingBoards;
 use SymfonyCon\Mastermind\Game\Code;
 use SymfonyCon\Mastermind\Game\CodeMaker;
 use SymfonyCon\Mastermind\Game\DecodingBoard;
@@ -33,20 +35,7 @@ class MastermindContext implements Context
 
     public function __construct()
     {
-        $this->decodingBoards = new class implements DecodingBoards
-        {
-            private $boards = [];
-
-            public function get(GameUuid $uuid): DecodingBoard
-            {
-                return $this->boards[(string) $uuid];
-            }
-
-            public function put(DecodingBoard $decodingBoard)
-            {
-                $this->boards[(string) $decodingBoard->gameUuid()] = $decodingBoard;
-            }
-        };
+        $this->decodingBoards = new InMemoryDecodingBoards();
     }
 
     /**
@@ -67,20 +56,7 @@ class MastermindContext implements Context
 
         $startGameUseCase = new StartGameUseCase(
             $this->decodingBoards,
-            new class(Code::fromString($code)) implements CodeMaker
-            {
-                private $code;
-
-                public function __construct(Code $code)
-                {
-                    $this->code = $code;
-                }
-
-                public function newCode(int $length): Code
-                {
-                    return $this->code;
-                }
-            },
+            new InMemoryCodeMaker(Code::fromString($code)),
             $this->numberOfAttempts
         );
         $this->gameUuid = $startGameUseCase->execute($codeLength);
