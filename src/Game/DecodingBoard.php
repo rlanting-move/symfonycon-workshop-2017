@@ -20,6 +20,11 @@ class DecodingBoard
      */
     private $numberOfAttempts;
 
+    /**
+     * @var int
+     */
+    private $attemptsUsed = 0;
+
     public function __construct(GameUuid $gameUuid, Code $secretCode, int $numberOfAttempts)
     {
         $this->gameUuid = $gameUuid;
@@ -29,6 +34,12 @@ class DecodingBoard
 
     public function makeGuess(Code $code): Feedback
     {
+        if ($this->attemptsUsed >= $this->numberOfAttempts) {
+            throw new NoAttemptsLeftException($this->numberOfAttempts);
+        }
+
+        $this->attemptsUsed++;
+
         return new Feedback(
             $code,
             $this->secretCode->exactHits($code),
