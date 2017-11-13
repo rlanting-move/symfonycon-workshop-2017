@@ -52,6 +52,10 @@ class Code
         return count($this->getPegsWithExactHits($anotherCode));
     }
 
+    public function colourHits($anotherCode)
+    {
+    }
+
     private function hasSamePegOnPosition(int $position, CodePeg $codePeg): bool
     {
         return $this->codePegs[$position]->equals($codePeg);
