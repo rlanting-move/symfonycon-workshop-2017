@@ -49,5 +49,6 @@ class Code
 
     public function exactHits($anotherCode)
     {
+        return 0;
     }
 }
