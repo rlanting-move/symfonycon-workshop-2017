@@ -49,6 +49,14 @@ class Code
 
     public function exactHits(Code $anotherCode): int
     {
-        return 0;
+        $hits = 0;
+
+        foreach ($this->codePegs as $position => $codePeg) {
+            if ($codePeg->equals($anotherCode->codePegs[$position])) {
+                $hits = $hits + 1;
+            }
+        }
+
+        return $hits;
     }
 }
